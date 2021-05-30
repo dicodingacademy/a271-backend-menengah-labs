@@ -10,6 +10,8 @@
         "ecmaVersion": 2020
     },
     "rules": {
-        "no-console": "off"
+        "no-console": "off",
+        "linebreak-style": "off",
+        "no-underscore-dangle": "off"
     }
 }
