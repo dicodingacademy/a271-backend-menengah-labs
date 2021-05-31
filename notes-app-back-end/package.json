@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "@hapi/hapi": "^20.1.0",
+    "@hapi/jwt": "^2.0.1",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "joi": "^17.4.0",
