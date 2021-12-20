@@ -131,7 +131,7 @@ Pastikan fitur dan kriteria OpenMusic API versi 2 dan 1 tetap dipertahankan sepe
 
 Ketika membangun OpenMusic API versi 3, tentu Anda perlu menguji untuk memastikan API berjalan sesuai dengan kriteria yang ada. Kami sudah menyediakan berkas Postman Collection dan Environment yang dapat Anda gunakan untuk pengujian. Silakan unduh berkasnya pada tautan berikut:
 
-- [Postman OpenMusic API V3 Test Collection dan Environment](https://github.com/dicodingacademy/a271-backend-menengah-labs/raw/0ca1099916f443df0871a4efd9c8f7c57117993e/03-submission-content/01-open-music-api-v1/OpenMusic%20API%20V1%20Test.zip)
+- [Postman OpenMusic API V3 Test Collection dan Environment](https://github.com/dicodingacademy/a271-backend-menengah-labs/raw/0ca1099916f443df0871a4efd9c8f7c57117993e/03-submission-content/03-open-music-api-v3/OpenMusic%20API%20V3%20Test.zip)
 
 Anda perlu meng-import kedua berkas tersebut pada Postman untuk menggunakannya. Caranya, ekstrak berkas yang sudah diunduh hingga menghasilkan dua berkas file JSON.
 
