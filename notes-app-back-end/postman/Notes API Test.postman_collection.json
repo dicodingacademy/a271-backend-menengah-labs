@@ -44,7 +44,7 @@
 									"    const { data } = responseJson;\r",
 									" \r",
 									"    pm.expect(data).to.ownProperty('userId');\r",
-									"    pm.expect(data.noteId).to.not.equals('');\r",
+									"    pm.expect(data.userId).to.not.equals('');\r",
 									" \r",
 									"    pm.environment.set('currentUserId', data.userId);\r",
 									"});"
