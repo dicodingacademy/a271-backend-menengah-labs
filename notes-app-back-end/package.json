@@ -19,9 +19,12 @@
     "nodemon": "^3.0.1"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.449.0",
+    "@aws-sdk/s3-request-presigner": "^3.450.0",
     "@hapi/hapi": "^21.3.2",
     "@hapi/inert": "^7.1.0",
     "@hapi/jwt": "^3.2.0",
+    "@smithy/url-parser": "^2.0.13",
     "amqplib": "^0.10.3",
     "aws-sdk": "^2.1488.0",
     "bcrypt": "^5.1.1",
