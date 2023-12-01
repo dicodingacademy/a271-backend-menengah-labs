@@ -22,15 +22,22 @@ class StorageService {
       ContentType: meta.headers['content-type'],
     });
 
-    this._S3.send(parameter);
-    const url = await this.createPresignedUrl({
-      bucket: process.env.AWS_BUCKET_NAME,
-      key: meta.filename,
+    return new Promise((resolve, reject) => {
+      const url = this.createPreSignedUrl({
+        bucket: process.env.AWS_BUCKET_NAME,
+        key: meta.filename,
+      });
+      this._S3.send(parameter, (error) => {
+        if (error) {
+          return reject(error);
+        }
+
+        return resolve(url);
+      });
     });
-    return url;
   }
 
-  createPresignedUrl({ bucket, key }) {
+  createPreSignedUrl({ bucket, key }) {
     const command = new GetObjectCommand({ Bucket: bucket, Key: key });
     return getSignedUrl(this._S3, command, { expiresIn: 3600 });
   }
