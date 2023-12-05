@@ -1,26 +1,45 @@
-const AWS = require('aws-sdk');
+const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const {
+  getSignedUrl,
+} = require('@aws-sdk/s3-request-presigner');
 
 class StorageService {
   constructor() {
-    this._S3 = new AWS.S3();
+    this._S3 = new S3Client({
+      region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+    });
   }
 
-  writeFile(file, meta) {
-    const parameter = {
-      Bucket: process.env.AWS_BUCKET_NAME, // Nama S3 Bucket yang digunakan
-      Key: +new Date() + meta.filename, // Nama berkas yang akan disimpan
-      Body: file._data, // Berkas (dalam bentuk Buffer) yang akan disimpan
-      ContentType: meta.headers['content-type'], // MIME Type berkas yang akan disimpan
-    };
+  async writeFile(file, meta) {
+    const parameter = new PutObjectCommand({
+      Bucket: process.env.AWS_BUCKET_NAME,
+      Key: meta.filename,
+      Body: file._data,
+      ContentType: meta.headers['content-type'],
+    });
 
     return new Promise((resolve, reject) => {
-      this._S3.upload(parameter, (error, data) => {
+      const url = this.createPreSignedUrl({
+        bucket: process.env.AWS_BUCKET_NAME,
+        key: meta.filename,
+      });
+      this._S3.send(parameter, (error) => {
         if (error) {
           return reject(error);
         }
-        return resolve(data.Location);
+
+        return resolve(url);
       });
     });
+  }
+
+  createPreSignedUrl({ bucket, key }) {
+    const command = new GetObjectCommand({ Bucket: bucket, Key: key });
+    return getSignedUrl(this._S3, command, { expiresIn: 3600 });
   }
 }
 
