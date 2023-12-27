@@ -6,7 +6,7 @@ const NotesValidator = require('./validator/notes');
 const init = async () => {
   const notesService = new NotesService();
   const server = Hapi.server({
-    port: 5000,
+    port: 3000,
     host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',
     routes: {
       cors: {
