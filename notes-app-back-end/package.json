@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:prod": "NODE_ENV=production node ./src/server.js",
-    "start:dev": "nodemon ./src/server.js",
+    "start-prod": "NODE_ENV=production node ./src/server.js",
+    "start-dev": "nodemon ./src/server.js",
     "lint": "eslint ./src",
     "migrate": "node-pg-migrate"
   },
@@ -13,23 +13,25 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "eslint": "^8.53.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.0",
-    "nodemon": "^3.0.1"
+    "eslint": "^7.21.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-plugin-import": "^2.22.1",
+    "nodemon": "^2.0.7"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.462.0",
+    "@aws-sdk/s3-request-presigner": "^3.462.0",
     "@hapi/hapi": "^21.3.2",
     "@hapi/inert": "^7.1.0",
     "@hapi/jwt": "^3.2.0",
     "amqplib": "^0.10.3",
-    "aws-sdk": "^2.1494.0",
+    "aws-sdk": "^2.1488.0",
     "bcrypt": "^5.1.1",
     "dotenv": "^16.3.1",
     "joi": "^17.11.0",
     "nanoid": "^3.1.20",
-    "node-pg-migrate": "^6.2.2",
-    "pg": "^8.11.3",
-    "redis": "^4.6.10"
+    "node-pg-migrate": "^5.9.0",
+    "pg": "^8.6.0",
+    "redis": "^3.1.2"
   }
 }
