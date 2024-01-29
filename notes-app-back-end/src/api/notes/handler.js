@@ -48,11 +48,11 @@ class NotesHandler {
     };
   }
 
-  putNoteByIdHandler(request, h) {
+  async putNoteByIdHandler(request, h) {
     this._validator.validateNotePayload(request.payload);
     const { id } = request.params;
 
-      this._service.editNoteById(id, request.payload);
+    await this._service.editNoteById(id, request.payload);
 
     return {
       status: 'success',
@@ -60,9 +60,9 @@ class NotesHandler {
     };
   }
 
-  deleteNoteByIdHandler(request, h) {
+  async deleteNoteByIdHandler(request, h) {
     const { id } = request.params;
-    this._service.deleteNoteById(id);
+    await this._service.deleteNoteById(id);
 
     return {
       status: 'success',
