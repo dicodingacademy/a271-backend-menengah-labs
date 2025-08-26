@@ -1,76 +1,67 @@
 import NoteRepositories from '../repositories/index.js';
 import response from '../../../utils/response.js';
+import InvariantError from '../../../exceptions/invariant-error.js';
+import NotFoundError from '../../../exceptions/not-found-error.js';
 
 export const createNote = async (req, res, next) => {
-  try {
-    const {
-      title,
-      body,
-      tags
-    } = req.validated;
+  const { title, body, tags } = req.validated;
+  const note = await NoteRepositories.createNote({
+    title,
+    body,
+    tags
+  });
 
-    const note = await NoteRepositories.createNote({
-      title,
-      body,
-      tags
-    });
-
-    return response(res, 201, 'Catatan sukses ditambahkan', note);
-  } catch (error) {
-    return next(error);
+  if (!note) {
+    return next(new InvariantError('Catatan gagal ditambahkan'));
   }
+
+  return response(res, 201, 'Catatan sukses ditambahkan', note);
 };
 
-export const getNotes = async (req, res, next) => {
-  try {
-    const notes = await NoteRepositories.getNotes();
-    return response(res, 200, 'Catatan sukses ditampilkan', notes);
-  } catch (error) {
-    return next(error);
-  }
+export const getNotes = async (req, res) => {
+  const notes = await NoteRepositories.getNotes();
+  return response(res, 200, 'Catatan sukses ditampilkan', notes);
 };
 
 export const getNoteById = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const note = await NoteRepositories.getNoteById(id);
-    return response(res, 200, 'Catatan sukses ditampilkan', note);
-  } catch (error) {
-    return next(error);
+  const { id } = req.params;
+  const note = await NoteRepositories.getNoteById(id);
+
+  if (!note) {
+    return next(new NotFoundError('Catatan tidak ditemukan'));
   }
+
+  return response(res, 200, 'Catatan sukses ditampilkan', note);
 };
 
 export const editNote = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
+  const {
+    title,
+    body,
+    tags
+  } = req.validated;
+  const note = await NoteRepositories.editNote({
+    id,
+    title,
+    body,
+    tags
+  });
 
-    const {
-      title,
-      body,
-      tags
-    } = req.validated;
-
-    const note = await NoteRepositories.editNote({
-      id,
-      title,
-      body,
-      tags
-    });
-
-    return response(res, 200, 'Catatan berhasil diperbarui', note);
-  } catch (error) {
-    return next(error);
+  if (!note) {
+    return next(new NotFoundError('Catatan tidak ditemukan'));
   }
+
+  return response(res, 200, 'Catatan berhasil diperbarui', note);
 };
 
 export const deleteNote = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+  const { id } = req.params;
+  const deletedNote = await NoteRepositories.deleteNote(id);
 
-    const deletedNote = await NoteRepositories.deleteNote(id);
-
-    return response(res, 200, 'Catatan berhasil dihapus', deletedNote);
-  } catch (error) {
-    return next(error);
+  if (!deletedNote) {
+    return next(new NotFoundError('Catatan tidak ditemukan'));
   }
+
+  return response(res, 200, 'Catatan berhasil dihapus', deletedNote);
 };
