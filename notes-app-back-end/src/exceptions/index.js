@@ -7,9 +7,3 @@ export {
   InvariantError,
   NotFoundError,
 };
-
-export default {
-  ClientError,
-  InvariantError,
-  NotFoundError,
-};
