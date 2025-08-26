@@ -2,8 +2,6 @@ import pkg from 'pg';
 const { Pool } = pkg;
 import 'dotenv/config';
 import { nanoid } from 'nanoid';
-import InvariantError from '../../../exceptions/invariant-error.js';
-import NotFoundError from '../../../exceptions/not-found-error.js';
 
 class NoteRepositories {
   constructor() {
@@ -22,10 +20,6 @@ class NoteRepositories {
 
     const result = await this.pool.query(query);
 
-    if (!result.rows[0].id) {
-      throw new InvariantError('Catatan gagal ditambahkan');
-    }
-
     return result.rows[0].id;
   }
 
@@ -43,10 +37,6 @@ class NoteRepositories {
 
     const result = await this.pool.query(query);
 
-    if (!result.rows.length) {
-      throw new NotFoundError('Catatan tidak ditemukan');
-    }
-
     return result.rows[0];
   }
 
@@ -60,10 +50,6 @@ class NoteRepositories {
 
     const result = await this.pool.query(query);
 
-    if (!result.rows.length) {
-      throw new NotFoundError('Gagal memperbarui catatan. Id tidak ditemukan');
-    }
-
     return result.rows[0];
   }
 
@@ -74,10 +60,7 @@ class NoteRepositories {
     };
 
     const result = await this.pool.query(query);
-
-    if (!result.rows.length) {
-      throw new NotFoundError('Catatan gagal dihapus. Id tidak ditemukan');
-    }
+    return result.rows[0].id;
   }
 }
 
