@@ -1,28 +1,32 @@
-import UserRepositories from '../repositories/index.js';
+import UserRepositories from '../repositories/user-repositories.js';
 import response from '../../../utils/response.js';
 import InvariantError from '../../../exceptions/invariant-error.js';
 import NotFoundError from '../../../exceptions/not-found-error.js';
 
 export const createUser = async (req, res, next) => {
   const { username, password, fullname } = req.validated;
-  const isUsernameExist = await UserRepositories.verifyNewUsername(username);
 
+  const isUsernameExist = await UserRepositories.verifyNewUsername(username);
   if (isUsernameExist) {
     return next(new InvariantError('Username sudah digunakan'));
   }
 
-  const user = await UserRepositories.createUser({
+  const userId = await UserRepositories.createUser({
     username,
     password,
-    fullname
+    fullname,
   });
 
-  return response(res, 201, 'User berhasil ditambahkan', user);
+  if (!userId) {
+    return next(new InvariantError('User gagal ditambahkan'));
+  }
+
+  return response(res, 201, 'User berhasil ditambahkan', userId);
 };
 
 export const getUsers = async (req, res) => {
   const users = await UserRepositories.getUsers();
-  return response(res, 200, 'Users berhasil ditampilkan', { users });
+  return response(res, 200, 'Users berhasil ditampilkan', users);
 };
 
 export const getUserById = async (req, res, next) => {
@@ -33,23 +37,31 @@ export const getUserById = async (req, res, next) => {
     return next(new NotFoundError('User tidak ditemukan'));
   }
 
-  return response(res, 200, 'User berhasil ditampilkan', { user });
+  return response(res, 200, 'User berhasil ditampilkan', user);
 };
 
 export const editUser = async (req, res, next) => {
   const { id } = req.params;
   const { username, password, fullname } = req.validated;
 
+  const existingUser = await UserRepositories.getUserById(id);
+  if (!existingUser) {
+    return next(new NotFoundError('User tidak ditemukan'));
+  }
+
+  if (username !== existingUser.username) {
+    const isUsernameExist = await UserRepositories.verifyNewUsername(username);
+    if (isUsernameExist) {
+      return next(new InvariantError('Username sudah digunakan oleh user lain'));
+    }
+  }
+
   const user = await UserRepositories.editUser({
     id,
     username,
     password,
-    fullname
+    fullname,
   });
-
-  if (!user) {
-    return next(new NotFoundError('User tidak ditemukan'));
-  }
 
   return response(res, 200, 'User berhasil diperbarui', user);
 };

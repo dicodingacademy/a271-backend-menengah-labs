@@ -32,15 +32,12 @@ class UserRepositories {
 
     const result = await this._pool.query(query);
 
-    return result.rows;
+    return result.rows.length > 0;
   }
 
   async getUsers() {
-    const query = {
-      text: 'SELECT * FROM users',
-    };
+    const result = await this._pool.query('SELECT * FROM users');
 
-    const result = await this._pool.query(query);
     return result.rows;
   }
 
@@ -57,10 +54,11 @@ class UserRepositories {
 
   async editUser({ id, username, password, fullname }) {
     const updatedAt = new Date().toISOString();
+    const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
 
     const query = {
-      text: 'UPDATE users SET username = $1, password = $2, fullname = $3, updated_at = $4 WHERE id = $5 RETURNING id, username, fullname, created_at, updated_at',
-      values: [username, password, fullname, updatedAt, id],
+      text: 'UPDATE users SET username = COALESCE($1, username), password = COALESCE($2, password), fullname = COALESCE($3, fullname), updated_at = $5 WHERE id = $6 RETURNING id, username, fullname, email, created_at, updated_at',
+      values: [username, hashedPassword, fullname, updatedAt, id],
     };
 
     const result = await this._pool.query(query);
@@ -77,6 +75,34 @@ class UserRepositories {
     const result = await this._pool.query(query);
 
     return result.rows[0].id;
+  }
+
+  async getUserByUsername(username) {
+    const query = {
+      text: 'SELECT id, username, password FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const result = await this._pool.query(query);
+    return result.rows[0];
+  }
+
+  async verifyUserCredential(username, password) {
+    const user = await this.getUserByUsername(username);
+
+    if (!user) {
+      return null;
+    }
+
+    const { id, password: hashedPassword } = user;
+
+    const match = await bcrypt.compare(password, hashedPassword);
+
+    if (!match) {
+      return null;
+    }
+
+    return id;
   }
 }
 
