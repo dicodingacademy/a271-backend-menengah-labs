@@ -15,7 +15,7 @@ export const createNote = async (req, res, next) => {
     return next(new InvariantError('Catatan gagal ditambahkan'));
   }
 
-  return response(res, 201, 'Catatan sukses ditambahkan', note);
+  return response(res, 201, 'Catatan berhasil ditambahkan', note);
 };
 
 export const getNotes = async (req, res) => {

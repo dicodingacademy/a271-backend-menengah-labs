@@ -21,7 +21,7 @@ class UserRepositories {
 
     const result = await this._pool.query(query);
 
-    return result.rows[0].id;
+    return result.rows[0];
   }
 
   async verifyNewUsername(username) {
@@ -34,7 +34,6 @@ class UserRepositories {
 
     return result.rows.length > 0;
   }
-
   async getUsers() {
     const result = await this._pool.query('SELECT * FROM users');
 
@@ -79,22 +78,27 @@ class UserRepositories {
 
   async getUserByUsername(username) {
     const query = {
-      text: 'SELECT id, username, password FROM users WHERE username = $1',
-      values: [username],
+      text: 'SELECT id, username, fullname FROM users WHERE username LIKE $1',
+      values: [`%${username}%`],
     };
 
     const result = await this._pool.query(query);
-    return result.rows[0];
+    return result.rows;
   }
 
   async verifyUserCredential(username, password) {
-    const user = await this.getUserByUsername(username);
+    const query = {
+      text: 'SELECT id, password FROM users WHERE username = $1',
+      values: [username],
+    };
+
+    const user = await this._pool.query(query);
 
     if (!user) {
       return null;
     }
 
-    const { id, password: hashedPassword } = user;
+    const { id, password: hashedPassword } = user.rows[0];
 
     const match = await bcrypt.compare(password, hashedPassword);
 
