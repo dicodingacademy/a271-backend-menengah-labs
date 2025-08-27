@@ -1,6 +1,5 @@
 import pkg from 'pg';
 const { Pool } = pkg;
-import 'dotenv/config';
 import { nanoid } from 'nanoid';
 
 class NoteRepositories {
