@@ -1,4 +1,4 @@
-import NoteRepositories from '../repositories/index.js';
+import NoteRepositories from '../repositories/note-repositories.js';
 import response from '../../../utils/response.js';
 import InvariantError from '../../../exceptions/invariant-error.js';
 import NotFoundError from '../../../exceptions/not-found-error.js';
