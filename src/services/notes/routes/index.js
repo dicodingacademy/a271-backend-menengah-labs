@@ -6,10 +6,10 @@ import { notePayloadSchema } from '../../../services/notes/validator/schema.js';
 
 const router = Router();
 
-router.post('/', validate(notePayloadSchema), createNote);
+router.post('/', authenticateToken, validate(notePayloadSchema), createNote);
 router.get('/', authenticateToken, getNotes);
-router.get('/:id', getNoteById);
-router.put('/:id', validate(notePayloadSchema), editNote);
-router.delete('/:id', deleteNote);
+router.get('/:id', authenticateToken, getNoteById);
+router.put('/:id', authenticateToken, validate(notePayloadSchema), editNote);
+router.delete('/:id', authenticateToken, deleteNote);
 
 export default router;
