@@ -87,6 +87,23 @@ class NoteRepositories {
 
     return result.rows[0];
   }
+
+  async verifyNoteAccess(noteId, userId) {
+    const ownerResult = await this.verifyNoteOwner(noteId, userId);
+
+    if (ownerResult) {
+      return ownerResult;
+    }
+
+    const query = {
+      text: 'SELECT * FROM collaborations WHERE note_id = $1 AND user_id = $2',
+      values: [noteId, userId],
+    };
+
+    await this.pool.query(query);
+
+    return false;
+  }
 }
 
 export default new NoteRepositories();
