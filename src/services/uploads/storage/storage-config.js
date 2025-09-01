@@ -8,7 +8,7 @@ if (!fs.existsSync(UPLOAD_FOLDER)) {
   fs.mkdirSync(UPLOAD_FOLDER, { recursive: true });
 }
 
-const storage = multer.diskStorage({
+const storage = multer.memoryStorage({
   destination: (req, file, cb) => cb(null, UPLOAD_FOLDER),
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}-${file.originalname}`);
