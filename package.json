@@ -24,7 +24,8 @@
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.0.2",
     "nanoid": "^5.1.5",
-    "pg": "^8.16.3"
+    "pg": "^8.16.3",
+    "redis": "^5.8.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.34.0",

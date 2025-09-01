@@ -1,10 +1,12 @@
 import pkg from 'pg';
 const { Pool } = pkg;
 import { nanoid } from 'nanoid';
+import CacheService from '../../../cache/redis-config.js';
 
 class CollaborationRepositories {
   constructor() {
     this.pool = new Pool();
+    this.cacheService = new CacheService();
   }
 
   async addCollaboration(noteId, userId) {
@@ -16,6 +18,8 @@ class CollaborationRepositories {
     };
 
     const result = await this.pool.query(query);
+
+    await this.cacheService.delete(`notes:${userId}`);
     return result.rows[0].id;
   }
 
@@ -26,6 +30,9 @@ class CollaborationRepositories {
     };
 
     const result = await this.pool.query(query);
+
+    await this.cacheService.delete(`notes:${userId}`);
+
     return result.rows[0];
   }
 
