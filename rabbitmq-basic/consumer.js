@@ -1,4 +1,4 @@
-const amqp = require('amqplib');
+import amqp from 'amqplib';
 
 const init = async () => {
   const connection = await amqp.connect('amqp://localhost');
@@ -10,9 +10,20 @@ const init = async () => {
     durable: true,
   });
 
-  channel.consume(queue, (message) => {
-    console.log(`Menerima pesan dari queue ${queue}: ${message.content.toString()}`);
-  }, { noAck: true });
+  channel.consume(
+    queue,
+    (message) => {
+      if (!message) {
+        return;
+      }
+
+      console.log(`Menerima pesan dari queue ${queue}: ${message.content.toString()}`);
+    },
+    { noAck: true },
+  );
 };
 
-init();
+init().catch((error) => {
+  console.error('Gagal menerima pesan:', error);
+  process.exit(1);
+});

@@ -1,4 +1,4 @@
-const amqp = require('amqplib');
+import amqp from 'amqplib';
 
 const init = async () => {
   const connection = await amqp.connect('amqp://localhost');
@@ -14,9 +14,13 @@ const init = async () => {
   await channel.sendToQueue(queue, Buffer.from(message));
   console.log('Pesan berhasil terkirim!');
 
-  setTimeout(() => {
-    connection.close();
+  setTimeout(async () => {
+    await channel.close();
+    await connection.close();
   }, 1000);
 };
 
-init();
+init().catch((error) => {
+  console.error('Gagal mengirim pesan:', error);
+  process.exit(1);
+});
