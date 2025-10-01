@@ -1,4 +1,4 @@
-const { Pool } = require('pg');
+import { Pool } from 'pg';
 
 class NotesService {
   constructor() {
@@ -18,4 +18,4 @@ class NotesService {
   }
 }
 
-module.exports = NotesService;
+export default NotesService;
