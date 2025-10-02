@@ -1,61 +1,56 @@
-const Hapi = require('@hapi/hapi');
-const fs = require('fs');
-const path = require('path');
+import express from 'express';
+import multer from 'multer';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const init = async () => {
-  const server = Hapi.server({
-    port: 3000,
-    host: 'localhost',
-  });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-  server.route({
-    method: 'POST',
-    path: '/uploads',
-    handler: async (request) => {
-      // mendapatkan dan melihat nilai request.payload.data
-      const { data } = request.payload;
-      console.log(data);
+const uploadsDirectory = path.resolve(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDirectory)) {
+  fs.mkdirSync(uploadsDirectory, { recursive: true });
+}
 
-      // menentukan nama dan folder berkas
-      const filename = data.hapi.filename;
-      const directory = path.resolve(__dirname, 'uploads');
-      if (!fs.existsSync(directory)) {
-        fs.mkdirSync(directory); // membuat folder bila belum ada
-      }
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadsDirectory);
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
 
-      // membuat writable stream
-      const location =  `${directory}/${filename}`;
-      const fileStream = fs.createWriteStream(location);
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 500000,
+  },
+});
 
-      try {
-        const result = await new Promise((resolve, reject) => {
-          // mengembalikan Promise.reject ketika terjadi eror
-          fileStream.on('error', (error) => reject(error));
+const app = express();
 
-          // membaca Readable (data) dan menulis ke Writable (fileStream)
-          data.pipe(fileStream);
+app.post('/uploads', upload.single('data'), (req, res) => {
+  console.log(req.file);
 
-          // setelah selesai membaca Readable (data) maka mengembalikan nama berkas.
-          data.on('end', () => resolve(filename));
-        });
+  if (!req.file) {
+    return res.status(400).json({ message: 'Berkas gagal diproses' });
+  }
 
-        return { message: `Berkas ${result} berhasil diproses!` };
-      } catch (error) {
-        return { message: `Berkas gagal diproses` };
-      }
-    },
-    options: {
-      payload: {
-        allow: 'multipart/form-data',
-        multipart: true,
-        output: 'stream',
-        maxBytes: 500000, // 500KB
-      },
-    },
-  });
+  return res.json({ message: `Berkas ${req.file.originalname} berhasil diproses!` });
+});
 
-  await server.start();
-  console.log(`Server start at ${server.info.uri}`);
-};
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error(err);
+    return res.status(400).json({ message: 'Berkas gagal diproses' });
+  }
 
-init();
+  return next();
+});
+
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+  console.log(`Server start at http://localhost:${port}`);
+});
