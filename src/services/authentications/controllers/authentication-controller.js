@@ -1,4 +1,4 @@
-import AuthenticationRepositories from '../repositories/authentications-repositories.js';
+import AuthenticationRepositories from '../repositories/authentication-repositories.js';
 import UserRepositories from '../../users/repositories/user-repositories.js';
 import TokenManager from '../../../security/token-manager.js';
 import response from '../../../utils/response.js';
