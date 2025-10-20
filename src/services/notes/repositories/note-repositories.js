@@ -1,5 +1,4 @@
-import pkg from 'pg';
-const { Pool } = pkg;
+import { Pool } from 'pg';
 import { nanoid } from 'nanoid';
 import CacheService from '../../../cache/redis-config.js';
 
@@ -76,8 +75,9 @@ class NoteRepositories {
 
     const result = await this.pool.query(query);
 
+    const owner = result.rows[0].owner;
     if (result.rows[0]) {
-      await this.cacheService.delete(`notes:${result.rows[0].owner}`);
+      await this.cacheService.delete(`notes:${owner}`);
     }
 
     return result.rows[0];
@@ -91,8 +91,10 @@ class NoteRepositories {
 
     const result = await this.pool.query(query);
 
+    const owner = result.rows[0].owner;
+
     if (result.rows[0]) {
-      await this.cacheService.delete(`notes:${result.rows[0].owner}`);
+      await this.cacheService.delete(`notes:${owner}`);
     }
 
     return result.rows[0].id;

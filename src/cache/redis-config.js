@@ -12,7 +12,6 @@ class CacheService {
       console.error(error);
     });
 
-    // Perhatikan: connect() mengembalikan Promise. Kamu bisa await di pemanggilnya.
     this._client.connect();
   }
 
