@@ -3,7 +3,8 @@ import path from 'path';
 import multer from 'multer';
 import ClientError from '../../../exceptions/client-error.js';
 
-export const UPLOAD_FOLDER = path.resolve('uploads/file/images');
+export const UPLOAD_FOLDER = path.resolve(process.cwd(), 'src/services/uploads/files/images');
+
 if (!fs.existsSync(UPLOAD_FOLDER)) {
   fs.mkdirSync(UPLOAD_FOLDER, { recursive: true });
 }
