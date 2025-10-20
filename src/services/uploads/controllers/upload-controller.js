@@ -2,8 +2,6 @@ import ClientError from '../../../exceptions/client-error.js';
 import response from '../../../utils/response.js';
 import StorageService from '../storage/storage-service.js';
 
-const storageService = new StorageService();
-
 export const uploadImages = async (req, res, next) => {
   if (!req.file) {
     return next(new ClientError('No file uploaded'));
