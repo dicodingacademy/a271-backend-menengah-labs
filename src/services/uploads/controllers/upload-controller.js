@@ -1,7 +1,6 @@
 import ClientError from '../../../exceptions/client-error.js';
 import response from '../../../utils/response.js';
-import StorageService from '../storage/s3-service.js';
-import path from 'path';
+import StorageService from '../storage/storage-service.js';
 
 const storageService = new StorageService();
 
@@ -17,10 +16,4 @@ export const uploadImages = async (req, res, next) => {
   });
 
   return response(res, 201, 'success', { fileLocation });
-};
-
-export const getImage = async (req, res) => {
-  const filename = decodeURIComponent(req.params.filename);
-  const imagePath = path.resolve('', filename);
-  return response(res, 200, 'success', imagePath);
 };
