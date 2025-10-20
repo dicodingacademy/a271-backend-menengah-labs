@@ -1,5 +1,4 @@
-import pkg from 'pg';
-const { Pool } = pkg;
+import { Pool } from 'pg';
 import { nanoid } from 'nanoid';
 
 class NoteRepositories {
