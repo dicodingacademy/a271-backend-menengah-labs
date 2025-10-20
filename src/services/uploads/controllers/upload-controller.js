@@ -1,6 +1,6 @@
 import ClientError from '../../../exceptions/client-error.js';
 import response from '../../../utils/response.js';
-import StorageService from '../storage/storage-service.js';
+import storageService from '../storage/storage-service.js';
 
 export const uploadImages = async (req, res, next) => {
   if (!req.file) {
