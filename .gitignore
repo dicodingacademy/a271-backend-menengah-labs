@@ -3,4 +3,4 @@ node_modules
 .env
 .prod.env
 package-lock.json
-notes-app-back-end/src/api/uploads/file
+notes-app-back-end/src/services/uploads/files/images
