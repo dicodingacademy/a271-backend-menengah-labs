@@ -1,23 +1,24 @@
 /* eslint-disable camelcase */
 
-exports.shorthands = undefined;
+export const shorthands = undefined;
 
-exports.up = (pgm) => {
-  pgm.createTable('notes', {
+export const up = (pgm) => {
+  pgm.createTable('users', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
-    title: {
+    username: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+      unique: true,
+    },
+    password: {
       type: 'TEXT',
       notNull: true,
     },
-    body: {
+    fullname: {
       type: 'TEXT',
-      notNull: true,
-    },
-    tags: {
-      type: 'TEXT[]',
       notNull: true,
     },
     created_at: {
@@ -31,6 +32,6 @@ exports.up = (pgm) => {
   });
 };
 
-exports.down = (pgm) => {
-  pgm.dropTable('notes');
+export const down = (pgm) => {
+  pgm.dropTable('users');
 };

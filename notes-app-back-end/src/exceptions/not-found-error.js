@@ -1,10 +1,10 @@
-const ClientError = require('./ClientError');
+import ClientError from '../exceptions/client-error.js';
 
 class NotFoundError extends ClientError {
   constructor(message) {
-    super(message, 404);
+    super(message);
     this.name = 'NotFoundError';
   }
 }
 
-module.exports = NotFoundError;
+export default NotFoundError;

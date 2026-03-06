@@ -1,30 +1,33 @@
 {
-  "name": "notes-app-back-end",
+  "name": "note-express",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start:prod": "NODE_ENV=production node ./src/server.js",
-    "start:dev": "nodemon ./src/server.js",
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "migrate": "node-pg-migrate",
     "lint": "eslint ./src",
-    "migrate": "node-pg-migrate"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "author": "aras",
   "license": "ISC",
-  "devDependencies": {
-    "eslint": "^8.52.0",
-    "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.0",
-    "nodemon": "^3.0.1"
-  },
   "dependencies": {
-    "@hapi/hapi": "^21.3.2",
     "bcrypt": "^5.1.1",
-    "dotenv": "^16.3.1",
-    "joi": "^17.11.0",
-    "nanoid": "^3.1.20",
-    "node-pg-migrate": "^6.2.2",
-    "pg": "^8.11.3"
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "joi": "^17.13.3",
+    "jsonwebtoken": "^9.0.2",
+    "nanoid": "^5.1.5",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "eslint": "^9.34.0",
+    "eslint-config-dicodingacademy": "^0.9.5",
+    "globals": "^16.3.0",
+    "node-pg-migrate": "^7.9.1",
+    "nodemon": "^3.1.10"
   }
 }
