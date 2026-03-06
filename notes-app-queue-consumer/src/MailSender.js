@@ -1,4 +1,4 @@
-const nodemailer = require('nodemailer');
+import nodemailer from 'nodemailer';
 
 class MailSender {
   constructor() {
@@ -31,4 +31,4 @@ class MailSender {
   }
 }
 
-module.exports = MailSender;
+export default MailSender;

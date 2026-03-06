@@ -2,7 +2,8 @@
   "name": "notes-app-queue-consumer",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "type": "module",
+  "main": "src/consumer.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,14 +11,14 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "amqplib": "^0.10.3",
-    "dotenv": "^16.3.1",
-    "nodemailer": "^6.9.7",
-    "pg": "^8.11.3"
+    "amqplib": "^0.10.4",
+    "dotenv": "^16.4.5",
+    "nodemailer": "^6.9.13",
+    "pg": "^8.11.5"
   },
   "devDependencies": {
-    "eslint": "^8.53.0",
+    "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.29.0"
+    "eslint-plugin-import": "^2.29.1"
   }
 }
