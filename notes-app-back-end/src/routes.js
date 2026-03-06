@@ -1,34 +1,18 @@
-const { deleteNoteByIdHandler } = require('./handler');
-const { editNoteByIdHandler } = require('./handler');
-const { getNoteByIdHandler } = require('./handler');
-const { addNoteHandler, getAllNotesHandler } = require('./handler');
+import express from 'express';
+import {
+  createNote,
+  getNotes,
+  getNoteById,
+  editNoteById,
+  deleteNoteById
+} from './controller.js';
 
-const routes = [
-  {
-    method: 'POST',
-    path: '/notes',
-    handler: addNoteHandler,
-  },
-  {
-    method: 'GET',
-    path: '/notes',
-    handler: getAllNotesHandler,
-  },
-  {
-    method: 'GET',
-    path: '/notes/{id}',
-    handler: getNoteByIdHandler,
-  },
-  {
-    method: 'PUT',
-    path: '/notes/{id}',
-    handler: editNoteByIdHandler,
-  },
-  {
-    method: 'DELETE',
-    path: '/notes/{id}',
-    handler: deleteNoteByIdHandler,
-  },
-];
+const router = express.Router();
 
-module.exports = routes;
+router.post('/notes', createNote);
+router.get('/notes', getNotes);
+router.get('/notes/:id', getNoteById);
+router.put('/notes/:id', editNoteById);
+router.delete('/notes/:id', deleteNoteById);
+
+export default router;

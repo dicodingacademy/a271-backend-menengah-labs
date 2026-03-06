@@ -1,21 +1,12 @@
-const Hapi = require('@hapi/hapi');
-const routes = require('./routes');
+import express from 'express';
+import routes from './routes.js';
 
-const init = async () => {
-  const server = Hapi.server({
-    port: 3000,
-    host: process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0',
-    routes: {
-      cors: {
-        origin: ['*'],
-      },
-    },
-  });
+const app = express();
+const port = 3000;
+const host = process.env.NODE_ENV !== 'production' ? 'localhost' : '0.0.0.0';
+app.use(express.json());
+app.use('/', routes);
 
-  server.route(routes);
-
-  await server.start();
-  console.log(`Server berjalan pada ${server.info.uri}`);
-};
-
-init();
+app.listen(port, () => {
+  console.log(`Server running at http://${host}:${port}`);
+});
